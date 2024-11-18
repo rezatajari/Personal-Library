@@ -10,42 +10,14 @@ namespace Personal_Library.Entities
     {
         public string Title { get; set; }
         public string Author { get; set; }
-        public string ISBN { get; set; }
         public GenreType Genre { get; set; }
 
         public enum GenreType
         {
-            // Fiction Genres
-            Fantasy,
-            ScienceFiction,
-            Mystery,
-            Romance,
-            Horror,
-            Thriller,
-            HistoricalFiction,
-            Adventure,
-            LiteraryFiction,
-            Dystopian,
 
-            // Non-Fiction Genres
-            Biography,
-            Autobiography,
-            SelfHelp,
-            History,
-            Travel,
-            Science,
-            Philosophy,
-            Business,
-            TrueCrime,
-            Cookbooks,
-            Memoir,
-
-            // Children's and YA Genres
-            PictureBooks,
-            MiddleGrade,
-            YoungAdult,
-            FairyTales,
-            Educational
+            Fantasy = 1,
+            ScienceFiction = 2,
+            Biography = 3
         }
     }
 

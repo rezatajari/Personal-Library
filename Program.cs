@@ -1,56 +1,42 @@
-﻿
-using System.Diagnostics;
+﻿using Personal_Library;
 
 int selectOption;
-WelcomeApp();
+LibraryManagement library = new LibraryManagement();
+bool exitApp = false;
 
-
-
-
-
-void WelcomeApp()
+while (!exitApp)
 {
+    Console.Clear();
+    Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine("Welcome to the Personal Library Management System");
-    Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Save and Exit\r\nEnter your choice:");
+    Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Exit\r\nEnter your choice:");
 
     selectOption = Convert.ToInt16(Console.ReadLine());
+
+
+    switch (selectOption)
+    {
+        case 1:
+            library.AddBook();
+            break;
+        case 2:
+            library.RemoveBook();
+            break;
+        case 3:
+            library.SearchBook();
+            break;
+        case 4:
+            library.ListBook();
+            break;
+        case 5:
+            exitApp = true;
+            break;
+        default:
+            Console.WriteLine("Please only enter number between 1 to 5");
+            break;
+    }
 }
 
 
-switch (selectOption)
-{
-    case 1:
-        AddBook();
-        break;
-    case 2:
-        RemoveBook();
-        break;
-    case 3:
-        SearchBook();
-        break;
-    case 4:
-        ListBook();
-        break;
-    case 5:
-        break;
-    default:
-        Console.WriteLine("Please only enter number between 1 to 5");
-        break;
-}
 
-void AddBook()
-{
-}
-
-void ListBook()
-{
-}
-
-void SearchBook()
-{
-}
-
-void RemoveBook()
-{
-}
 
