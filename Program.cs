@@ -1,6 +1,6 @@
 ﻿using Personal_Library;
 
-int selectOption;
+MainMenu? selectOption;
 LibraryManagement library = new LibraryManagement();
 bool exitApp = false;
 
@@ -11,24 +11,23 @@ while (!exitApp)
     Console.WriteLine("Welcome to the Personal Library Management System");
     Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Exit\r\nEnter your choice:");
 
-    selectOption = Convert.ToInt16(Console.ReadLine());
-
+    selectOption = ValidationCenter.IsValidInput();
 
     switch (selectOption)
     {
-        case 1:
+        case MainMenu.Add:
             library.AddBook();
             break;
-        case 2:
+        case MainMenu.Remove:
             library.RemoveBook();
             break;
-        case 3:
+        case MainMenu.Search:
             library.SearchBook();
             break;
-        case 4:
+        case MainMenu.List:
             library.ListBook();
             break;
-        case 5:
+        case MainMenu.Exit:
             exitApp = true;
             break;
         default:
@@ -37,6 +36,14 @@ while (!exitApp)
     }
 }
 
+public enum MainMenu
+{
+    Add = 1,
+    Remove = 2,
+    Search = 3,
+    List = 4,
+    Exit = 5
+}
 
 
 

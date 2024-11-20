@@ -1,36 +1,78 @@
-﻿using Microsoft.VisualBasic;
-using Personal_Library.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Personal_Library.Entities;
 
 namespace Personal_Library
 {
     public static class ValidationCenter
     {
-        internal static Books.GenreType GetValidGenre()
+        internal static Books.GenreType? GetValidGenre()
         {
-            string genreInput;
-            bool isValid = false;
-            Books.GenreType genreResult = default;
-
-            while (!isValid)
+            while (true)
             {
-                Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
-                genreInput = Console.ReadLine();
-
-                if (Enum.TryParse(genreInput, true, out genreResult))
+                if (Enum.TryParse(Console.ReadLine(), true, out Books.GenreType result))
                 {
-                    isValid = true;
+                    return result;
                 }
                 else
                 {
-                    Console.WriteLine("Your genre type is wronge");
+                    Console.WriteLine("Invalid input, please input correct genre");
                 }
             }
-            return genreResult;
+        }
+
+        internal static int GetUserSelection()
+        {
+            int result;
+            while (!int.TryParse(Console.ReadLine(), out result))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number.");
+            }
+
+            return result;
+        }
+
+        internal static MainMenu? IsValidInput()
+        {
+            while (true)
+            {
+                if (Enum.TryParse(Console.ReadLine(), out MainMenu result))
+                {
+                    return result;
+                }
+                else
+                {
+                    Console.WriteLine("Please input correct number of menu");
+                }
+            }
+        }
+
+        internal static SearchOption? IsInputValid()
+        {
+            while (true)
+            {
+                if (Enum.TryParse(Console.ReadLine(), true, out SearchOption option))
+                {
+                    return option;
+                }
+                else
+                {
+                    Console.WriteLine("Please input correct number of search menu");
+                }
+            }
+        }
+
+        internal static bool IsBookValid(Books book)
+        {
+            if (book != null)
+            {
+                return true;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There is no book with this title.");
+                Console.ForegroundColor = ConsoleColor.White;
+                return false;
+            }
         }
     }
 }

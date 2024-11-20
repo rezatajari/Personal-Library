@@ -1,10 +1,4 @@
 ﻿using Personal_Library.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Personal_Library
 {
@@ -27,7 +21,8 @@ namespace Personal_Library
             Console.WriteLine("Please enter author of the book:");
             newBook.Author = Console.ReadLine();
 
-            newBook.Genre = ValidationCenter.GetValidGenre();
+            Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
+            newBook.Genre = (Books.GenreType)ValidationCenter.GetValidGenre();
 
             _bookList.Add(newBook);
 
@@ -39,15 +34,17 @@ namespace Personal_Library
         public void RemoveBook()
         {
             var removeBook = SearchBook();
-            if (IsBookValid(removeBook))
+            if (ValidationCenter.IsBookValid(removeBook))
             {
                 _bookList.Remove(removeBook);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Removed. Press any key to continue...");
                 Console.ResetColor();
                 Console.ReadKey();
+
             }
         }
+
         public void ListBook()
         {
 
@@ -71,7 +68,7 @@ namespace Personal_Library
             }
         }
 
-        public Books SearchBook()
+        public Books? SearchBook()
         {
             bool searchFlag = false;
             while (!searchFlag)
@@ -80,12 +77,12 @@ namespace Personal_Library
                 string bookName = Console.ReadLine();
                 var searchBook = _bookList.Find(b => b.Title.Equals(bookName, StringComparison.OrdinalIgnoreCase));
 
-                if (!IsBookValid(searchBook))
+                if (!ValidationCenter.IsBookValid(searchBook))
                 {
                     Console.WriteLine("Try again choose an option:\n1. search\n2. Go to menu\n3. Exit");
-                    string inputUser = Console.ReadLine();
 
-                    SearchOption? selectOption = isInputValid(inputUser);
+                    SearchOption? selectOption = (SearchOption?)ValidationCenter.IsInputValid();
+
                     switch (selectOption)
                     {
                         case SearchOption.SearchAgain:
@@ -107,28 +104,6 @@ namespace Personal_Library
                 }
             }
             return null;
-        }
-
-
-        private SearchOption? isInputValid(string? inputUser)
-        {
-            if (Enum.TryParse(inputUser, true, out SearchOption option))
-            {
-                return option;
-            }
-            return null;
-        }
-
-        private bool IsBookValid(Books book)
-        {
-            if (book == null)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("There is no book with this title.");
-                Console.ForegroundColor = ConsoleColor.White;
-                return false;
-            }
-            return true;
         }
 
         public enum SearchOption
