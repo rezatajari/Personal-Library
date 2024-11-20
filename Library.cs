@@ -21,7 +21,6 @@ namespace Personal_Library
             Console.WriteLine("Please enter author of the book:");
             newBook.Author = Console.ReadLine();
 
-            Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
             newBook.Genre = (Books.GenreType)ValidationCenter.GetValidGenre();
 
             _bookList.Add(newBook);

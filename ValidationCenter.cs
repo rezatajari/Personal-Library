@@ -8,39 +8,45 @@ namespace Personal_Library
         {
             while (true)
             {
-                if (Enum.TryParse(Console.ReadLine(), true, out Books.GenreType result))
+                try
                 {
-                    return result;
+                    Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
+                    string input = Console.ReadLine();
+
+                    if (Enum.TryParse(input, true, out Books.GenreType result))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input, please input correct genre");
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    Console.WriteLine("Invalid input, please input correct genre");
+                    Console.WriteLine($"There is a error: {err.Message}");
                 }
             }
-        }
-
-        internal static int GetUserSelection()
-        {
-            int result;
-            while (!int.TryParse(Console.ReadLine(), out result))
-            {
-                Console.WriteLine("Invalid input. Please enter a valid number.");
-            }
-
-            return result;
         }
 
         internal static MainMenu? IsValidInput()
         {
             while (true)
             {
-                if (Enum.TryParse(Console.ReadLine(), out MainMenu result))
+                try
                 {
-                    return result;
+                    if (Enum.TryParse(Console.ReadLine(), out MainMenu result))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please input correct number of menu");
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    Console.WriteLine("Please input correct number of menu");
+                    Console.WriteLine($"There is a error: {err.Message}");
                 }
             }
         }
@@ -49,28 +55,43 @@ namespace Personal_Library
         {
             while (true)
             {
-                if (Enum.TryParse(Console.ReadLine(), true, out SearchOption option))
+                try
                 {
-                    return option;
+                    if (Enum.TryParse(Console.ReadLine(), true, out SearchOption option))
+                    {
+                        return option;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please input correct number of search menu");
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    Console.WriteLine("Please input correct number of search menu");
+                    Console.WriteLine($"There is a error: {err.Message}");
                 }
             }
         }
 
         internal static bool IsBookValid(Books book)
         {
-            if (book != null)
+            try
             {
-                return true;
+                if (book != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("There is no book with this title.");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    return false;
+                }
             }
-            else
+            catch (Exception err)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("There is no book with this title.");
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"There is a error: {err.Message}");
                 return false;
             }
         }
