@@ -36,6 +36,18 @@ namespace Personal_Library
             Thread.Sleep(500);
         }
 
+        public void RemoveBook()
+        {
+            var removeBook = SearchBook();
+            if (IsBookValid(removeBook))
+            {
+                _bookList.Remove(removeBook);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Removed. Press any key to continue...");
+                Console.ResetColor();
+                Console.ReadKey();
+            }
+        }
         public void ListBook()
         {
 
@@ -59,17 +71,71 @@ namespace Personal_Library
             }
         }
 
-        public void SearchBook()
+        public Books SearchBook()
         {
+            bool searchFlag = false;
+            while (!searchFlag)
+            {
+                Console.WriteLine("What is book title do you want it?");
+                string bookName = Console.ReadLine();
+                var searchBook = _bookList.Find(b => b.Title.Equals(bookName, StringComparison.OrdinalIgnoreCase));
+
+                if (!IsBookValid(searchBook))
+                {
+                    Console.WriteLine("Try again choose an option:\n1. search\n2. Go to menu\n3. Exit");
+                    string inputUser = Console.ReadLine();
+
+                    SearchOption? selectOption = isInputValid(inputUser);
+                    switch (selectOption)
+                    {
+                        case SearchOption.SearchAgain:
+                            break;
+                        case SearchOption.GoToMenu:
+                            searchFlag = true;
+                            break;
+                        case SearchOption.Exit:
+                            Environment.Exit(0);
+                            break;
+                        default:
+                            Console.WriteLine("Invalid option, please try again.");
+                            break;
+                    }
+                }
+                else
+                {
+                    return searchBook;
+                }
+            }
+            return null;
         }
 
-        public void RemoveBook()
+
+        private SearchOption? isInputValid(string? inputUser)
         {
+            if (Enum.TryParse(inputUser, true, out SearchOption option))
+            {
+                return option;
+            }
+            return null;
         }
 
+        private bool IsBookValid(Books book)
+        {
+            if (book == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("There is no book with this title.");
+                Console.ForegroundColor = ConsoleColor.White;
+                return false;
+            }
+            return true;
+        }
 
-
-
-
+        public enum SearchOption
+        {
+            SearchAgain = 1,
+            GoToMenu = 2,
+            Exit = 3
+        }
     }
 }
