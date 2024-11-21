@@ -1,4 +1,5 @@
 ﻿using Personal_Library.Entities;
+using static Personal_Library.LibraryManagement;
 
 namespace Personal_Library
 {
@@ -51,13 +52,13 @@ namespace Personal_Library
             }
         }
 
-        internal static SearchOption? IsInputValid()
+        internal static MySearchOption? IsInputValid()
         {
             while (true)
             {
                 try
                 {
-                    if (Enum.TryParse(Console.ReadLine(), true, out SearchOption option))
+                    if (Enum.TryParse(Console.ReadLine(), true, out MySearchOption option))
                     {
                         return option;
                     }
@@ -95,5 +96,6 @@ namespace Personal_Library
                 return false;
             }
         }
+     
     }
 }
