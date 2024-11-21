@@ -5,18 +5,15 @@ namespace Personal_Library
 {
     public static class ValidationCenter
     {
-        internal static Books.GenreType? GetValidGenre()
+        internal static bool GetValidGenre(string input)
         {
             while (true)
             {
                 try
                 {
-                    Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
-                    string input = Console.ReadLine();
-
                     if (Enum.TryParse(input, true, out Books.GenreType result))
                     {
-                        return result;
+                        return true;
                     }
                     else
                     {
@@ -30,15 +27,15 @@ namespace Personal_Library
             }
         }
 
-        internal static MainMenu? IsValidInput()
+        internal static bool IsValidInput(string input)
         {
             while (true)
             {
                 try
                 {
-                    if (Enum.TryParse(Console.ReadLine(), out MainMenu result))
+                    if (Enum.TryParse(input, out MainMenu result))
                     {
-                        return result;
+                        return true;
                     }
                     else
                     {
@@ -52,15 +49,15 @@ namespace Personal_Library
             }
         }
 
-        internal static MySearchOption? IsInputValid()
+        internal static bool IsInputValid(string input)
         {
             while (true)
             {
                 try
                 {
-                    if (Enum.TryParse(Console.ReadLine(), true, out MySearchOption option))
+                    if (Enum.TryParse(input, true, out MySearchOption option))
                     {
-                        return option;
+                        return true;
                     }
                     else
                     {
@@ -96,6 +93,6 @@ namespace Personal_Library
                 return false;
             }
         }
-     
+
     }
 }

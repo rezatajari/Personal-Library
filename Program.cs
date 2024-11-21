@@ -3,7 +3,7 @@ using Personal_Library.Entities;
 using static Personal_Library.LibraryManagement;
 using static Personal_Library.ValidationCenter;
 
-MainMenu? selectOption;
+bool isValidMenu;
 LibraryManagement library = new LibraryManagement();
 bool exitApp = false;
 
@@ -14,7 +14,9 @@ while (!exitApp)
     Console.WriteLine("Welcome to the Personal Library Management System");
     Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Exit\r\nEnter your choice:");
 
-    selectOption = ValidationCenter.IsValidInput();
+    string selectMenu = Console.ReadLine();
+    isValidMenu = ValidationCenter.IsValidInput(selectMenu);
+    Enum.TryParse(selectMenu, true, out MainMenu selectOption);
 
     switch (selectOption)
     {
@@ -29,7 +31,12 @@ while (!exitApp)
                 Console.WriteLine("Please enter author of the book:");
                 newBook.Author = Console.ReadLine();
 
-                newBook.Genre = (Books.GenreType)ValidationCenter.GetValidGenre();
+                Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
+                string input = Console.ReadLine();
+                bool isValidGenre = ValidationCenter.GetValidGenre(input);
+                Enum.TryParse(input, true, out Books.GenreType genre);
+                newBook.Genre = genre;
+
                 library.AddBook(newBook);
 
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -83,7 +90,9 @@ while (!exitApp)
                     {
                         Console.WriteLine("Try again choose an option:\n1. search\n2. Go to menu\n3. Exit");
 
-                        MySearchOption? selectSearchOption = ValidationCenter.IsInputValid();
+                        string inputOption = Console.ReadLine();
+                        bool isValid = ValidationCenter.IsInputValid(inputOption);
+                        Enum.TryParse(inputOption, true, out MySearchOption selectSearchOption);
 
                         switch (selectSearchOption)
                         {
