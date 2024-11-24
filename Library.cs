@@ -42,12 +42,5 @@ namespace Personal_Library
         {
             return _bookList.Find(b => b.Title.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
         }
-
-        public enum MySearchOption
-        {
-            SearchAgain = 1,
-            GoToMenu = 2,
-            Exit = 3
-        }
     }
 }

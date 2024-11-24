@@ -1,9 +1,5 @@
 ﻿using Personal_Library.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Personal_Library.Enums;
 using static Personal_Library.LibraryManagement;
 
 namespace Personal_Library
@@ -20,26 +16,10 @@ namespace Personal_Library
         {
             try
             {
-                Books newBook = new Books();
-
-                Console.WriteLine("Please enter your title book:");
-                newBook.Title = Console.ReadLine();
-
-                Console.WriteLine("Please enter author of the book:");
-                newBook.Author = Console.ReadLine();
-
-                Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
-                string input = Console.ReadLine();
-                bool isValidGenre = ValidationCenter.GetValidGenre(input);
-                Enum.TryParse(input, true, out Books.GenreType genre);
-                newBook.Genre = genre;
-
+                Books newBook = PerformBook();
                 _library.AddBook(newBook);
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"The {newBook.Title} is Added!");
-                Console.WriteLine("Please enter a key");
-                Console.ReadKey();
+                ResultAddBookMessage(newBook.Title);
             }
             catch (Exception err)
             {
@@ -47,30 +27,87 @@ namespace Personal_Library
             }
         }
 
+        private void ResultAddBookMessage(string title)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"The {title} is Added!");
+            Console.ResetColor();
+            Console.WriteLine("Please enter a key");
+            Console.ReadKey();
+        }
+
+        private Books PerformBook()
+        {
+            Books newBook = new Books();
+
+            newBook.Title = GetTitle();
+            newBook.Author = GetAuthor();
+            newBook.Genre = GetGenre();
+
+            return newBook;
+        }
+
+        private string GetAuthor()
+        {
+            Console.WriteLine("Please enter author of the book:");
+            return Console.ReadLine();
+        }
+
+        private string GetTitle()
+        {
+            Console.WriteLine("Please enter your title book:");
+            return Console.ReadLine();
+        }
+
+        public Books.GenreType GetGenre()
+        {
+            Console.WriteLine("Enter a genre {1. Fantasy,2. ScienceFiction,3. Biography}");
+            string input = Console.ReadLine();
+            bool isValidGenre = ValidationCenter.GetValidGenre(input);
+            Enum.TryParse(input, true, out Books.GenreType genre);
+            return genre;
+        }
+
         public void RemoveBook()
         {
             try
             {
-                List<Books> listBooks = _library.ListBook();
+                Books getBook = GetBook();
 
-                Console.WriteLine("Please enter remove your title book?");
-                string bookTitle = Console.ReadLine();
-
-                Books removeBook = _library.SearchBook(bookTitle);
-
-                if (ValidationCenter.IsBookValid(removeBook))
+                bool isBookValid = CheckBookValid(getBook);
+                if (isBookValid)
                 {
-                    _library.RemoveBook(removeBook);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Removed. Press any key to continue...");
-                    Console.ResetColor();
-                    Console.ReadKey();
+                    _library.RemoveBook(getBook);
+                    RemoveConfirmMessage();
                 }
             }
             catch (Exception err)
             {
                 Console.WriteLine($"There is a error: {err.Message}");
             }
+        }
+
+        private bool CheckBookValid(Books book)
+        {
+            return ValidationCenter.IsBookValid(book);
+        }
+
+        private void RemoveConfirmMessage()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Removed. Press any key to continue...");
+            Console.ResetColor();
+            Console.ReadKey();
+        }
+
+        private Books GetBook()
+        {
+            List<Books> listBooks = _library.ListBook();
+
+            Console.WriteLine("Please enter remove your title book?");
+            string bookTitle = Console.ReadLine();
+
+            return _library.SearchBook(bookTitle);
         }
 
         public void SearchBook()
@@ -81,37 +118,18 @@ namespace Personal_Library
             {
                 try
                 {
-                    Console.WriteLine("Enter your book title do you want it?");
-                    string bookTitle = Console.ReadLine();
+                    Books book = SearchByTitle();
+                    bool isBookValid = CheckBookValid(book);
 
-                    var searchBook = _library.SearchBook(bookTitle);
-
-                    if (!ValidationCenter.IsBookValid(searchBook))
+                    if (isBookValid)
                     {
-                        Console.WriteLine("Try again choose an option:\n1. search\n2. Go to menu\n3. Exit");
-
-                        string inputOption = Console.ReadLine();
-                        bool isValid = ValidationCenter.IsInputValid(inputOption);
-                        Enum.TryParse(inputOption, true, out MySearchOption selectSearchOption);
-
-                        switch (selectSearchOption)
-                        {
-                            case MySearchOption.SearchAgain:
-                                break;
-                            case MySearchOption.GoToMenu:
-                                searchFlag = true;
-                                break;
-                            case MySearchOption.Exit:
-                                Environment.Exit(0);
-                                break;
-                            default:
-                                Console.WriteLine("Invalid option, please try again.");
-                                break;
-                        }
+                        Console.WriteLine($"Your title book is {book.Title} and your author book is {book.Author} and genre book is {book.Genre} book");
                     }
                     else
                     {
-                        Console.WriteLine($"Your title book is {searchBook.Title} and your author book is {searchBook.Author} and genre book is {searchBook.Genre} book");
+                        Console.WriteLine("Try again choose an option:\n1. search\n2. Go to menu\n3. Exit");
+
+                        SelectSearchMenu(ref searchFlag);
                     }
                 }
                 catch (Exception err)
@@ -120,6 +138,35 @@ namespace Personal_Library
                     Console.WriteLine($"There is a error: {err.Message}");
                 }
             }
+        }
+
+        private static void SelectSearchMenu(ref bool searchFlag)
+        {
+            if (!Enum.TryParse(Console.ReadLine(), true, out MySearchOption
+                          selectSearchOption) || !ValidationCenter.IsInputValid(selectSearchOption.ToString()))
+            {
+                Console.WriteLine("Invalid option, please try again.");
+                return;
+            }
+
+            switch (selectSearchOption)
+            {
+                case MySearchOption.SearchAgain:
+                    break;
+                case MySearchOption.GoToMenu:
+                    searchFlag = true;
+                    break;
+                case MySearchOption.Exit:
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
+        private Books SearchByTitle()
+        {
+            Console.WriteLine("Enter your book title do you want it?");
+            string bookTitle = Console.ReadLine();
+            return _library.SearchBook(bookTitle);
         }
 
         public void ListBook()

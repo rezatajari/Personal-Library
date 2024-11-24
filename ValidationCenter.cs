@@ -1,4 +1,5 @@
 ﻿using Personal_Library.Entities;
+using static Personal_Library.Enums;
 using static Personal_Library.LibraryManagement;
 
 namespace Personal_Library
@@ -29,23 +30,15 @@ namespace Personal_Library
 
         internal static bool IsValidInput(string input)
         {
-            while (true)
+            if (Enum.TryParse(input, out MainMenu result))
             {
-                try
-                {
-                    if (Enum.TryParse(input, out MainMenu result))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please input correct number of menu");
-                    }
-                }
-                catch (Exception err)
-                {
-                    Console.WriteLine($"There is a error: {err.Message}");
-                }
+                return true;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please input correct number of menu");
+                return false;
             }
         }
 

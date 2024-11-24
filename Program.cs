@@ -1,5 +1,8 @@
 ﻿using Personal_Library;
 using Personal_Library.Entities;
+using System.Net.Http.Headers;
+using System.Reflection.Metadata.Ecma335;
+using static Personal_Library.Enums;
 using static Personal_Library.LibraryManagement;
 
 bool isValidMenu;
@@ -42,19 +45,34 @@ void Welcome()
 }
 MainMenu SelectMenu()
 {
-    Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Exit\r\nEnter your choice:");
-    string input = Console.ReadLine();
-    isValidMenu = ValidationCenter.IsValidInput(input);
-    Enum.TryParse(input, true, out MainMenu selectMenu);
-    return selectMenu;
+    while (true)
+    {
+        ShowMenu();
+        if (ChoiceEnterMenu(out MainMenu result))
+        {
+            return result;
+        }
+    }
 }
-public enum MainMenu
+
+static bool ChoiceEnterMenu(out MainMenu result)
 {
-    Add = 1,
-    Remove = 2,
-    Search = 3,
-    List = 4,
-    Exit = 5
+    result = default;
+    string input = Console.ReadLine();
+    bool inputValid = ValidationCenter.IsValidInput(input);
+
+    if (inputValid && Enum.TryParse(input, out result))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void ShowMenu()
+{
+    Console.ResetColor();
+    Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Exit\r\nEnter your choice:");
 }
 
 
