@@ -1,12 +1,35 @@
-﻿using Personal_Library;
-using Personal_Library.Entities;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Personal_Library;
 using static Personal_Library.Enums;
-using static Personal_Library.LibraryManagement;
 
-bool isValidMenu;
-BookRepository bookRepo = new BookRepository();
+
+var configuration = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .Build();
+
+// Set up DI container
+var serviceCollection = new ServiceCollection();
+ConfigureServices(serviceCollection, configuration);
+
+// Build the service provider
+var serviceProvider = serviceCollection.BuildServiceProvider();
+
+var bookRepository = serviceProvider.GetService<BookRepository>();
+
+static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+{
+    var connectionString = configuration.GetConnectionString("LibraryDB");
+    services.AddDbContext<LibraryDB>(options =>
+        options.UseSqlServer(connectionString));
+    services.AddTransient<LibraryService>();
+    services.AddTransient<BookRepository>();
+}
+
 bool exitApp = false;
 
 while (!exitApp)
@@ -17,16 +40,16 @@ while (!exitApp)
     switch (selectMenu)
     {
         case MainMenu.Add:
-            bookRepo.AddBook();
+            bookRepository.AddBook();
             break;
         case MainMenu.Remove:
-            bookRepo.RemoveBook();
+            bookRepository.RemoveBook();
             break;
         case MainMenu.Search:
-            bookRepo.SearchBook();
+            bookRepository.SearchBook();
             break;
         case MainMenu.List:
-            bookRepo.ListBook();
+            bookRepository.ListBook();
             break;
         case MainMenu.Exit:
             exitApp = true;
@@ -76,10 +99,19 @@ void ShowMenu()
 }
 
 
+
+
+
 //TODO: What’s Important for the Next Section:
-//      As you move forward, you might consider the following topics to enhance your library system:
-//1.    Persistence: Saving the books to a file or database (e.g., SQLite or MySQL).
+
 //2.	Advanced Validation: Handling more complex validations, such as ensuring that book titles are unique.
 //3.	User Interface: Moving from the console interface to a more user-friendly GUI, possibly using WPF (Windows Presentation Foundation) or ASP.NET Core for web-based applications.
 //4.	Error Handling: Ensure your application handles different types of errors (e.g., invalid input, file read/write errors) gracefully.
 //5.	Unit Testing: Implement unit tests for your methods to ensure they behave as expected.
+
+
+
+//TODO: sql
+
+
+//CRUD Operations: Implement CRUD(Create, Read, Update, Delete) operations for book management, interacting with the database instead of an in-memory list.

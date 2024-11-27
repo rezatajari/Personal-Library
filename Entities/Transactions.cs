@@ -1,6 +1,6 @@
 ﻿namespace Personal_Library.Entities
 {
-    internal class Transactions
+    public class Transactions
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -13,5 +13,8 @@
             Borrow,
             Return
         }
+
+        public Books Book { get; set; }
+        public Users User { get; set; }
     }
 }

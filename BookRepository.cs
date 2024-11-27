@@ -1,15 +1,15 @@
 ﻿using Personal_Library.Entities;
 using static Personal_Library.Enums;
-using static Personal_Library.LibraryManagement;
+using static Personal_Library.LibraryService;
 
 namespace Personal_Library
 {
     internal class BookRepository
     {
-        private LibraryManagement _library;
-        public BookRepository()
+        private LibraryService _library;
+        public BookRepository(LibraryService library)
         {
-            _library = new LibraryManagement();
+            _library = library;
         }
 
         public void AddBook()

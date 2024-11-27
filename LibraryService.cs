@@ -2,23 +2,26 @@
 
 namespace Personal_Library
 {
-    internal class LibraryManagement
+    internal class LibraryService
     {
-        private List<Books> _bookList;
-
-        internal LibraryManagement()
+        private readonly LibraryDB _libraryDB;
+        public LibraryService()
         {
-            _bookList = new List<Books>();
+            
+        }
+        internal LibraryService(LibraryDB libraryDB)
+        {
+            _libraryDB = libraryDB;
         }
 
         public void AddBook(Books newBook)
         {
-            _bookList.Add(newBook);
+            _libraryDB.Add(newBook);
         }
 
         public void RemoveBook(Books removeBook)
         {
-            _bookList.Remove(removeBook);
+            _libraryDB.Remove(removeBook);
         }
 
         public List<Books> ListBook()
@@ -28,19 +31,20 @@ namespace Personal_Library
             Console.WriteLine("{0,-20} {1,-20} {2,-15}", "Title", "Author", "Genre");
             Console.WriteLine(new string('-', 55));
 
-            foreach (Books book in _bookList)
+            foreach (Books book in _libraryDB.Books)
             {
                 Console.WriteLine("{0,-20} {1,-20} {2,-15}", book.Title, book.Author, book.Genre);
             }
 
             Console.WriteLine(new string('=', 55));
 
-            return _bookList;
+            return _libraryDB.Books.ToList();
         }
 
         public Books? SearchBook(string bookTitle)
         {
-            return _bookList.Find(b => b.Title.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
+            List<Books> bookList = _libraryDB.Books.ToList();
+            return bookList.Find(b => b.Title.Equals(bookTitle, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

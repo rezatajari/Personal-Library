@@ -1,6 +1,6 @@
 ﻿using Personal_Library.Entities;
 using static Personal_Library.Enums;
-using static Personal_Library.LibraryManagement;
+using static Personal_Library.LibraryService;
 
 namespace Personal_Library
 {

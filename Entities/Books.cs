@@ -1,7 +1,8 @@
 ﻿namespace Personal_Library.Entities
 {
-    internal class Books
+    public class Books
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public GenreType Genre { get; set; }
@@ -13,6 +14,8 @@
             ScienceFiction = 2,
             Biography = 3
         }
+
+        public ICollection<Transactions> Transactions { get; set; }
     }
 
 
