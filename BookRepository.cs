@@ -143,7 +143,7 @@ namespace Personal_Library
         private static void SelectSearchMenu(ref bool searchFlag)
         {
             if (!Enum.TryParse(Console.ReadLine(), true, out MySearchOption
-                          selectSearchOption) || !ValidationCenter.IsInputValid(selectSearchOption.ToString()))
+                          selectSearchOption) || !ValidationCenter.SearchValidInput(selectSearchOption.ToString()))
             {
                 Console.WriteLine("Invalid option, please try again.");
                 return;

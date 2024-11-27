@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Personal_Library;
 using static Personal_Library.Enums;
 
@@ -82,7 +80,7 @@ static bool ChoiceEnterMenu(out MainMenu result)
 {
     result = default;
     string input = Console.ReadLine();
-    bool inputValid = ValidationCenter.IsValidInput(input);
+    bool inputValid = ValidationCenter.MainValidInput(input);
 
     if (inputValid && Enum.TryParse(input, out result))
     {
@@ -97,21 +95,3 @@ void ShowMenu()
     Console.ResetColor();
     Console.WriteLine("1. Add a Book\n2. Remove a Book\n3. Search for a Book\n4. List All Books\n5. Exit\r\nEnter your choice:");
 }
-
-
-
-
-
-//TODO: What’s Important for the Next Section:
-
-//2.	Advanced Validation: Handling more complex validations, such as ensuring that book titles are unique.
-//3.	User Interface: Moving from the console interface to a more user-friendly GUI, possibly using WPF (Windows Presentation Foundation) or ASP.NET Core for web-based applications.
-//4.	Error Handling: Ensure your application handles different types of errors (e.g., invalid input, file read/write errors) gracefully.
-//5.	Unit Testing: Implement unit tests for your methods to ensure they behave as expected.
-
-
-
-//TODO: sql
-
-
-//CRUD Operations: Implement CRUD(Create, Read, Update, Delete) operations for book management, interacting with the database instead of an in-memory list.

@@ -28,7 +28,7 @@ namespace Personal_Library
             }
         }
 
-        internal static bool IsValidInput(string input)
+        internal static bool MainValidInput(string input)
         {
             if (Enum.TryParse(input, out MainMenu result))
             {
@@ -42,7 +42,7 @@ namespace Personal_Library
             }
         }
 
-        internal static bool IsInputValid(string input)
+        internal static bool SearchValidInput(string input)
         {
             while (true)
             {
